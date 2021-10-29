@@ -1,33 +1,48 @@
-class MinStack {
-   public:
-    /** initialize your data structure here. */
-    MinStack() {
-    }
+#include <bits/stdc++.h>
+using namespace std;
 
-    void push(int x) {
-        if (st.empty()) {
-            st.push({x, x});
-        } else {
-            st.push({x, min(x, st.top().second)});
-        }
-    }
+struct Node {
+    int val;
+    int min;
+    Node* next;
 
-    void pop() {
-        st.pop();
+    Node(int val) {
+        this -> val = val;
+        this -> next = nullptr;
     }
-
-    int top() {
-        return st.top().first;
-    }
-
-    int getMin() {
-        return st.top().second;
-    }
-
-   private:
-    stack<pair<int, int>> st;
 };
 
+class MinStack {
+    Node* head;
+public:
+    MinStack() {
+        head = nullptr;
+    }
+    
+    void push(int val) {
+        if (head == nullptr) {
+            head = new Node(val);
+            head -> min = val;
+        } else {
+            Node* newNode = new Node(val);
+            newNode -> min = min(val, head -> min);
+            newNode -> next = head;
+            head = newNode;
+        }
+    }
+    
+    void pop() {
+        head = head -> next;
+    }
+    
+    int top() {
+        return head -> val;
+    }
+    
+    int getMin() {
+        return head -> min;
+    }
+};
 /**
  * Your MinStack object will be instantiated and called as such:
  * MinStack* obj = new MinStack();
